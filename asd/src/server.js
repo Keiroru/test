@@ -26,15 +26,26 @@ db.connect((err) => {
 });
 
 // API endpoint to create a new user
-app.post("/user", (req, res) => {
-  const { name, email, password } = req.body;
-  const query = "INSERT INTO user (name, email, password) VALUES (?, ?, ?)";
-  db.query(query, [name, email, password], (err, results) => {
+app.post("/users", (req, res) => {
+  const { userName, displayName, email, password, createdAt } = req.body;
+
+  const checkQuery = "SELECT * FROM users WHERE userName = ? OR displayName = ? OR email = ?";
+  db.query(checkQuery, [userName, displayName, email], (err, results) => {
     if (err) {
-      console.error("Database query error:", err);
-      res.status(500).json({ error: err.message });
-      return;
+      return res.status(500).json({ error: err.message });
     }
+    if (results.length > 0) {
+      return res.status(400).json({ error: "Username, display name, or email already exists" });
+    }
+
+    const insertQuery =
+      "INSERT INTO users (userName, displayName, email, password, createdAt) VALUES (?, ?, ?, ?, ?)";
+    db.query(insertQuery, [userName, displayName, email, password, createdAt], (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.status(201).json({ message: "User created successfully", data: results });
+    });
   });
 });
 
