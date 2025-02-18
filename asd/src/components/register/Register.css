@@ -20,13 +20,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: radial-gradient(
-    circle at center,
-    #1d2127 0%,
-    #2e3139 40%,
-    #3c4a52 80%,
-    #526175 100%
-  );
+  background: radial-gradient(circle at center,
+      #1d2127 0%,
+      #2e3139 40%,
+      #3c4a52 80%,
+      #526175 100%);
 }
 
 .registerForm {
@@ -155,4 +153,27 @@ form button:hover {
 
 input {
   color: #e0e6ed;
+}
+
+.inputError {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+  display: flex;
+}
+
+.offscreen {
+  display: flex;
+}
+
+.alert {
+  position: absolute;
+  top: 50px;
+  width: 50%;
+  align-items: center;
+}
+
+.alert ul {
+  display: flex;
+  flex-direction: column;
 }

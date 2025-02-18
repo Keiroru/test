@@ -12,19 +12,18 @@ function Login() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     userRef.current?.focus();
   }, []);
 
-  const navigate = useNavigate();
-
-  const navigateToRegister = () => {
-    navigate("/register");
-  };
-
-  const navigateToChat = () => {
-    navigate("/chat");
-  };
+  // Navigate to chat page on success
+  useEffect(() => {
+    if (success) {
+      navigate("/chat");
+    }
+  }, [success, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,13 +43,10 @@ function Login() {
       errRef.current?.focus();
       setUsername("");
       setPassword("");
-      setSuccess(true);
     }
   };
 
-  return success ? (
-    navigateToChat()
-  ) : (
+  return (
     <div className="page">
       <div className="background">
         <div className="loginForm">
@@ -64,28 +60,33 @@ function Login() {
           <h1>Login</h1>
           <form onSubmit={handleSubmit}>
             <div className="inputContainer">
+              <i className="fa fa-user"></i>
               <input
                 type="text"
-                ref={userRef}
-                autoComplete="off"
+                id="username"
                 placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
+                ref={userRef}
                 value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
             <div className="inputContainer">
+              <i className="fa fa-lock"></i>
               <input
                 type="password"
+                id="password"
                 placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
                 value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
             <button type="submit">Login</button>
           </form>
-          <button onClick={navigateToRegister}>Register</button>
+          <p>
+            Don't have an account? <a href="/register">Register Here</a>
+          </p>
         </div>
       </div>
     </div>
